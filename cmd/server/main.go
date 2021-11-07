@@ -1,40 +1,59 @@
 package main
 
 import (
-	"net/http"
+	// "fmt"
 
-	sentryinit "github.com.buker/go-api-starter/internal/sentryinit"
-	sentrygin "github.com/getsentry/sentry-go/gin"
-	"github.com/gin-contrib/gzip"
-	"github.com/gin-gonic/gin"
+	"os"
+
+	"github.com/buker/go-api-starter/internal/config"
+	"github.com/buker/go-api-starter/internal/database"
+	"github.com/buker/go-api-starter/internal/middleware"
+	"github.com/buker/go-api-starter/internal/router"
+	log "github.com/sirupsen/logrus"
 )
 
+var configure = config.Config()
+
+func init() {
+	if configure.Server.ServerEnv != "local" {
+		log.SetFormatter(&log.JSONFormatter{})
+	} else if configure.Server.ServerEnv == "local" {
+		log.SetFormatter(&log.TextFormatter{
+			DisableColors: false,
+			FullTimestamp: true,
+		})
+	}
+	log.SetReportCaller(true)
+
+	log.SetOutput(os.Stdout)
+	if configure.Logger.LogLevel == "debug" {
+		log.SetLevel(log.DebugLevel)
+	} else if configure.Logger.LogLevel == "info" {
+		log.SetLevel(log.InfoLevel)
+	} else if configure.Logger.LogLevel == "warn" {
+		log.SetLevel(log.WarnLevel)
+	} else if configure.Logger.LogLevel == "error" {
+		log.SetLevel(log.ErrorLevel)
+	} else if configure.Logger.LogLevel == "fatal" {
+		log.SetLevel(log.FatalLevel)
+	} else if configure.Logger.LogLevel == "panic" {
+		log.SetLevel(log.PanicLevel)
+	}
+}
+
 func main() {
-	setupServer().Run()
-}
+	middleware.SentryInit(configure.Logger.SentryDsn)
+	if err := database.InitDB().Error; err != nil {
+		log.Error(err)
+	}
 
-// The engine with all endpoints is now extracted from the main function
-func setupServer() *gin.Engine {
-	r := gin.Default()
-	sentryinit.Init()
-	r.Use(sentrygin.New(sentrygin.Options{
-		Repanic: true,
-	}))
-	r.Use(func(ctx *gin.Context) {
-		if hub := sentrygin.GetHubFromContext(ctx); hub != nil {
-			hub.Scope().SetTag("someRandomTag", "maybeYouNeedIt")
-		}
-		ctx.Next()
-	})
-
-	r.Use(gzip.Gzip(gzip.BestSpeed))
-	r.GET("/health", healthEndpoint)
-
-	return r
-}
-
-func healthEndpoint(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"status": "OK",
-	})
+	// JWT
+	middleware.MySigningKey = []byte(configure.Server.ServerJWT.Key)
+	middleware.JWTExpireTime = configure.Server.ServerJWT.Expire
+	router := router.SetupRouter()
+	log.Info("Server will start")
+	err := router.Run(":" + configure.Server.ServerPort)
+	if err != nil {
+		log.Error(err)
+	}
 }
