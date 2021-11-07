@@ -1,3 +1,11 @@
+# Ignored files and directories #
+#################################
+*.log
+.env
+vendor/
+/server
+.vscode/*
+.vscode
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -5,7 +13,6 @@
 *.so
 *.dylib
 .pid
-/server
 # Test binary, built with `go test -c`
 *.test
 # Covarage file
@@ -14,6 +21,28 @@ coverage-all.out
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
-
-# Dependency directories (remove the comment below to include it)
-# vendor/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+# Local History for Visual Studio Code
+.history/
+# Swap
+[._]*.s[a-v][a-z]
+!*.svg  # comment out if you don't need vector files
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+# Session
+Session.vim
+Sessionx.vim
+# Temporary
+.netrwhist
+*~
+# Auto-generated tag files
+tags
+# Persistent undo
+[._]*.un~
