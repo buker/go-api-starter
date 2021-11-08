@@ -5,7 +5,7 @@ import (
 	"github.com/buker/go-api-starter/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
-
+// UsersRoutes defines the routes for the users api
 func Users(g *gin.RouterGroup) {
 	g.GET("", controller.GetUsers)    // Non-protected
 	g.GET("/:id", controller.GetUser) // Non-protected

@@ -8,13 +8,13 @@ import (
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 )
-
+//Struct for configuration
 type Configuration struct {
 	Server   ServerConfig
 	Database DatabaseConfig
 	Logger   LoggerConfig
 }
-
+//Function create configuration
 func Config() Configuration {
 	var configuration Configuration
 

@@ -14,6 +14,7 @@ import (
 
 var configure = config.Config()
 
+//Func to create router
 func SetupRouter() *gin.Engine {
 	if configure.Server.ServerEnv == "production" {
 		gin.SetMode(gin.ReleaseMode) // Omit this line to enable debug mode

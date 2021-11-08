@@ -4,7 +4,7 @@ import (
 	"github.com/onrik/logrus/sentry"
 	log "github.com/sirupsen/logrus"
 )
-
+// SentryHook is a hook to send exceptions to an exception-tracking service compatible with the Sentry protocol.
 func SentryInit(dsn string) {
 	sentryHook, err := sentry.NewHook(sentry.Options{
 		Dsn: dsn,
