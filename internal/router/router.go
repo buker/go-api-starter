@@ -1,6 +1,7 @@
 package router
 
 import (
+	"github.com/buker/go-api-starter/docs"
 	"github.com/buker/go-api-starter/internal/api"
 	"github.com/buker/go-api-starter/internal/middlewares"
 	"github.com/gin-contrib/gzip"
@@ -8,6 +9,8 @@ import (
 	ginlog "github.com/onrik/logrus/gin"
 	"github.com/penglongli/gin-metrics/ginmetrics"
 	"github.com/spf13/viper"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 //Func to create router
@@ -31,14 +34,19 @@ func SetupRouter() *gin.Engine {
 	metrics.SetDuration([]float64{0.1, 0.3, 1.2, 5, 10})
 	// set middleware for gin
 	metrics.Use(router)
+	docs.SwaggerInfo.Title = "TimeGladiator API"
+	docs.SwaggerInfo.Description = "API of TimeGladiator service"
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "localhost:8080"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+	docs.SwaggerInfo.BasePath = "/"
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// API:v1.0
 	tools := router.Group("/tools")
 	auth := router.Group("/auth")
 	v1 := router.Group("/api/v1/")
 	{
 
-		// Tools
 		api.Tools(tools.Group(""))
 		api.Auth(auth.Group(""))
 		api.User(v1.Group("user"))
