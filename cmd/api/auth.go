@@ -6,6 +6,7 @@ import (
 )
 
 // ToolsRoutes defines the routes for the tools api
-func Tools(g *gin.RouterGroup) {
-	g.GET("/health", controllers.HealtCheck) // Non-protected
+func Auth(g *gin.RouterGroup) {
+	g.POST("/users/signup", controllers.SignUp())
+	g.POST("/users/login", controllers.Login())
 }

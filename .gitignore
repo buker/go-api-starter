@@ -2,6 +2,7 @@
 #################################
 *.log
 .env
+config.yml
 vendor/
 /server
 .vscode/*

@@ -6,18 +6,21 @@ import (
 	"os"
 
 	"github.com/buker/go-api-starter/internal/config"
-	"github.com/buker/go-api-starter/internal/database"
-	"github.com/buker/go-api-starter/internal/middleware"
+	"github.com/buker/go-api-starter/internal/middlewares"
 	"github.com/buker/go-api-starter/internal/router"
 	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
-var configure = config.Config()
+var configure = config.GetConfig()
 
 func init() {
-	if configure.Server.ServerEnv != "local" {
+	if err := config.Setup(); err != nil {
+		log.WithError(err).Fatal("Failed to setup configuration")
+	}
+	if viper.GetString("app.env") != "local" {
 		log.SetFormatter(&log.JSONFormatter{})
-	} else if configure.Server.ServerEnv == "local" {
+	} else if viper.GetString("app.env") == "local" {
 		log.SetFormatter(&log.TextFormatter{
 			DisableColors: false,
 			FullTimestamp: true,
@@ -26,33 +29,32 @@ func init() {
 	log.SetReportCaller(true)
 
 	log.SetOutput(os.Stdout)
-	if configure.Logger.LogLevel == "debug" {
+	if viper.GetString("logger.logLevel") == "debug" {
 		log.SetLevel(log.DebugLevel)
-	} else if configure.Logger.LogLevel == "info" {
+	} else if viper.GetString("logger.logLevel") == "info" {
 		log.SetLevel(log.InfoLevel)
-	} else if configure.Logger.LogLevel == "warn" {
+	} else if viper.GetString("logger.logLevel") == "warn" {
 		log.SetLevel(log.WarnLevel)
-	} else if configure.Logger.LogLevel == "error" {
+	} else if viper.GetString("logger.logLevel") == "error" {
 		log.SetLevel(log.ErrorLevel)
-	} else if configure.Logger.LogLevel == "fatal" {
+	} else if viper.GetString("logger.logLevel") == "fatal" {
 		log.SetLevel(log.FatalLevel)
-	} else if configure.Logger.LogLevel == "panic" {
+	} else if viper.GetString("logger.logLevel") == "panic" {
 		log.SetLevel(log.PanicLevel)
 	}
 }
 
 func main() {
-	middleware.SentryInit(configure.Logger.SentryDsn)
-	if err := database.InitDB().Error; err != nil {
-		log.Error(err)
+	log.Info(viper.GetString("app.env"))
+	log.Info(viper.GetString("app.env"))
+	if err := config.Setup(); err != nil {
+		log.WithError(err).Fatal("Failed to setup configuration")
 	}
+	middlewares.SentryInit(viper.GetString("logger.sentryDsn"))
 
-	// JWT
-	middleware.MySigningKey = []byte(configure.Server.ServerJWT.Key)
-	middleware.JWTExpireTime = configure.Server.ServerJWT.Expire
 	router := router.SetupRouter()
 	log.Info("Server will start")
-	err := router.Run(":" + configure.Server.ServerPort)
+	err := router.Run(":" + viper.GetString("app.port"))
 	if err != nil {
 		log.Error(err)
 	}

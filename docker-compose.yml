@@ -1,38 +1,40 @@
 version: '2.1'
 services:
-  server:
-    image: server
-    build:
-      context: .
-      dockerfile: build/server/Dockerfile
-    volumes:
-      - .env:/app/.env
-    ports:
-      - "8080:8080"
-    environment:
-      - APP_ENV=local
-      - APP_DSN=postgres://db/go_api?sslmode=disable&user=postgres&password=postgres
-    depends_on:
-      db:
-        condition: service_healthy
-  db:
-    image: "postgres:alpine"
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
-      POSTGRES_DB: "go_api"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  # server:
+  #   image: server
+  #   build:
+  #     context: .
+  #     dockerfile: build/server/Dockerfile
+  #   volumes:
+  #     - ./config.yml:/app/config.yml
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - APP_ENV=local
+  #     - APP_DSN=postgres://db/go_api?sslmode=disable&user=postgres&password=postgres
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  # postgres:
+  #   image: "postgres:alpine"
+  #   restart: always
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: "postgres"
+  #     POSTGRES_PASSWORD: "postgres"
+  #     POSTGRES_DB: "go_api"
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
   redis:
     image: "redis:alpine"
   mongodb:
     image: "mongo:latest"
+    ports:
+      - "27017:27017"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=root
