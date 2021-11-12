@@ -42,6 +42,7 @@ func SetupRouter() *gin.Engine {
 		api.Tools(tools.Group(""))
 		api.Auth(auth.Group(""))
 		api.User(v1.Group("user"))
+		api.TimeEntry(v1.Group("timeEntry"))
 
 	}
 

@@ -16,3 +16,8 @@ hashPass:
   keyLength: 32
   saltLength: 16
   parallelization: 4
+mongo:
+  username: "root"
+  password: "root"
+  hostname: "localhost:27017"
+  dbname: "go_api"

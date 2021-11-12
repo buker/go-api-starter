@@ -17,7 +17,7 @@ import (
 const (
 	// Timeout operations after N seconds
 	connectTimeout           = 5
-	connectionStringTemplate = "mongodb://%s:%s@%s"
+	connectionStringTemplate = "mongodb://%s:%s@%s:%s/"
 )
 
 // GetConnection Retrieves a client to the MongoDB
@@ -27,10 +27,10 @@ func DBinstance() *mongo.Client {
 	}
 	username := viper.GetString("mongo.username")
 	password := viper.GetString("mongo.password")
+	hostname := viper.GetString("mongo.hostname")
+	port := viper.GetString("mongo.port")
 
-	clusterEndpoint := viper.GetString("mongo.hostname")
-
-	connectionURI := fmt.Sprintf(connectionStringTemplate, username, password, clusterEndpoint)
+	connectionURI := fmt.Sprintf(connectionStringTemplate, username, password, hostname, port)
 	log.Info(connectionURI)
 	client, err := mongo.NewClient(options.Client().ApplyURI(connectionURI))
 	if err != nil {
