@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/buker/go-api-starter/cmd/api"
+	"github.com/buker/go-api-starter/internal/api"
 	"github.com/buker/go-api-starter/internal/middlewares"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"

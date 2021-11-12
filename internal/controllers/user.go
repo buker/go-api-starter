@@ -12,8 +12,8 @@ import (
 	"github.com/go-playground/validator/v10"
 
 	helper "github.com/buker/go-api-starter/internal/helpers"
-	"github.com/buker/go-api-starter/internal/models/db"
-	"github.com/buker/go-api-starter/internal/models/entity"
+	"github.com/buker/go-api-starter/internal/models"
+	db "github.com/buker/go-api-starter/internal/repository/mongodb"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -51,7 +51,7 @@ func VerifyPassword(userPassword string, providedPassword string) (bool, string)
 func SignUp() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
-		var user entity.User
+		var user models.User
 
 		if err := c.BindJSON(&user); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -113,8 +113,8 @@ func SignUp() gin.HandlerFunc {
 func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
-		var user entity.User
-		var foundUser entity.User
+		var user models.User
+		var foundUser models.User
 
 		if err := c.BindJSON(&user); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -211,7 +211,7 @@ func GetUser() gin.HandlerFunc {
 		}
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
-		var user entity.User
+		var user models.User
 
 		err := userCollection.FindOne(ctx, bson.M{"user_id": userId}).Decode(&user)
 		defer cancel()

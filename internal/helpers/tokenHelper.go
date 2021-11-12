@@ -3,13 +3,12 @@ package helper
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
-	"github.com/buker/go-api-starter/internal/models/db"
-	"github.com/spf13/viper"
-
+	db "github.com/buker/go-api-starter/internal/repository/mongodb"
 	jwt "github.com/dgrijalva/jwt-go"
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
