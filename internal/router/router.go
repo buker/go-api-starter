@@ -1,30 +1,28 @@
 package router
 
 import (
+	"github.com/buker/go-api-starter/docs"
+	"github.com/buker/go-api-starter/internal/api"
+	"github.com/buker/go-api-starter/internal/middlewares"
 	"github.com/gin-contrib/gzip"
-
-	"github.com/buker/go-api-starter/cmd/api"
-	"github.com/buker/go-api-starter/internal/config"
-	"github.com/buker/go-api-starter/internal/controller"
-	"github.com/buker/go-api-starter/internal/middleware"
 	"github.com/gin-gonic/gin"
 	ginlog "github.com/onrik/logrus/gin"
 	"github.com/penglongli/gin-metrics/ginmetrics"
+	"github.com/spf13/viper"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
-
-var configure = config.Config()
 
 //Func to create router
 func SetupRouter() *gin.Engine {
-	if configure.Server.ServerEnv == "production" {
+	if viper.GetString("app.env") == "production" {
 		gin.SetMode(gin.ReleaseMode) // Omit this line to enable debug mode
 	}
-
 	router := gin.New()
 	router.Use(gin.Recovery())
 	router.Use(gzip.Gzip(gzip.DefaultCompression, gzip.WithExcludedPaths([]string{"/metrics"})))
 	router.Use(ginlog.Middleware(ginlog.DefaultConfig))
-	router.Use(middleware.CORS())
+	router.Use(middlewares.CORS())
 	// get global Monitor object
 	metrics := ginmetrics.GetMonitor()
 	// +optional set metric path, default /debug/metrics
@@ -36,21 +34,24 @@ func SetupRouter() *gin.Engine {
 	metrics.SetDuration([]float64{0.1, 0.3, 1.2, 5, 10})
 	// set middleware for gin
 	metrics.Use(router)
+	docs.SwaggerInfo.Title = "TimeGladiator API"
+	docs.SwaggerInfo.Description = "API of TimeGladiator service"
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "localhost:8080"
+	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+	docs.SwaggerInfo.BasePath = "/"
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	// API:v1.0
+	tools := router.Group("/tools")
+	auth := router.Group("/auth")
 	v1 := router.Group("/api/v1/")
 	{
-		// Register - no JWT required
-		v1.POST("register", controller.CreateUserAuth)
 
-		// Login - app issues JWT
-		v1.POST("login", controller.Login)
+		api.Tools(tools.Group(""))
+		api.Auth(auth.Group(""))
+		api.User(v1.Group("user"))
+		api.TimeEntry(v1.Group("timeEntry"))
 
-		// User
-		api.Users(v1.Group("users"))
-
-		// Tools
-		api.Tools(v1.Group("tools"))
 	}
 
 	return router

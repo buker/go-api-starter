@@ -1,0 +1,39 @@
+host: time-reporter.com
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Apis for Time reporter
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: TimeReporter API
+  version: "1.0"
+paths:
+  /example/helloworld:
+    get:
+      consumes:
+      - application/json
+      description: do ping
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: CreateUser is the api used to tget a single user
+      tags:
+      - example
+  /tools/health:
+    get:
+      description: Get health status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ""
+      summary: Health check
+swagger: "2.0"
