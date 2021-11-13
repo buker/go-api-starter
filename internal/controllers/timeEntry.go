@@ -6,10 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
-
 	"github.com/buker/go-api-starter/internal/models"
 	db "github.com/buker/go-api-starter/internal/repository/mongodb"
+	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -46,7 +45,7 @@ func InsertTimeEntry() gin.HandlerFunc {
 		timeEntry.Updated_at, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
 		timeEntry.Time_start, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
 		timeEntry.Time_end, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-		timeEntry.User_id = foundUser.ID
+		timeEntry.User_id = foundUser.User_id
 		resultInsertionNumber, insertErr := timeEntriesCollection.InsertOne(ctx, timeEntry)
 		if insertErr != nil {
 			msg := fmt.Sprintf("Time entry item was not created")

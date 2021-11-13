@@ -46,14 +46,15 @@ func VerifyPassword(userPassword string, providedPassword string) (bool, string)
 
 	return check, msg
 }
+
 // CreateUser
 // @Summary CreateUser is the api used to tget a single user
 // @Schemes
 // @Description do ping
 // @Tags example
-// @Accept json
+// @Accept json model.User
 // @Produce json
-// @Success 200 {string} Helloworld
+// @Success 200 {string} model.User.User_id
 // @Router /example/helloworld [get]
 //CreateUser is the api used to tget a single user
 func SignUp() gin.HandlerFunc {
