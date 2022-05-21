@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	helper "github.com/buker/go-api-starter/internal/helpers"
+	helper "github.com/buker/TimeGladiator/internal/helpers"
 )
 
 // Authz validates token and authorizes users

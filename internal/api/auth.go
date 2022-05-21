@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/buker/go-api-starter/internal/controllers"
+	"github.com/buker/TimeGladiator/internal/controllers"
 	"github.com/gin-gonic/gin"
 )
 

@@ -5,9 +5,9 @@ import (
 
 	"os"
 
-	"github.com/buker/go-api-starter/internal/config"
-	"github.com/buker/go-api-starter/internal/middlewares"
-	"github.com/buker/go-api-starter/internal/router"
+	"github.com/buker/TimeGladiator/internal/config"
+	"github.com/buker/TimeGladiator/internal/middlewares"
+	"github.com/buker/TimeGladiator/internal/router"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )

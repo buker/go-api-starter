@@ -11,9 +11,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 
-	helper "github.com/buker/go-api-starter/internal/helpers"
-	"github.com/buker/go-api-starter/internal/models"
-	db "github.com/buker/go-api-starter/internal/repository/mongodb"
+	helper "github.com/buker/TimeGladiator/internal/helpers"
+	"github.com/buker/TimeGladiator/internal/models"
+	db "github.com/buker/TimeGladiator/internal/repository/mongodb"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

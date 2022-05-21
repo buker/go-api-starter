@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	db "github.com/buker/go-api-starter/internal/repository/mongodb"
+	db "github.com/buker/TimeGladiator/internal/repository/mongodb"
 	jwt "github.com/dgrijalva/jwt-go"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"

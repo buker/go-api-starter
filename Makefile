@@ -23,18 +23,18 @@ test: ## run unit tests
 
 .PHONY: run
 run: ## run the API server
-	go run ${LDFLAGS} cmd/server/main.go
+	go run ${LDFLAGS} main.go
 
 .PHONY: run-restart
 run-restart: ## restart the API server
 	@pkill -P `cat $(PID_FILE)` || true
 	@printf '%*s\n' "80" '' | tr ' ' -
 	@echo "Source file changed. Restarting server..."
-	@go run ${LDFLAGS} cmd/server/main.go & echo $$! > $(PID_FILE)
+	@go run ${LDFLAGS} main.go & echo $$! > $(PID_FILE)
 	@printf '%*s\n' "80" '' | tr ' ' -
 
 run-live: ## run the API server with live reload support (requires fswatch)
-	@go run ${LDFLAGS} cmd/server/main.go & echo $$! > $(PID_FILE)
+	@go run ${LDFLAGS} main.go & echo $$! > $(PID_FILE)
 	@fswatch -x -o --event Created --event Updated --event Renamed -r internal pkg cmd config | xargs -n1 -I {} make run-restart
 
 .PHONY: install-deps

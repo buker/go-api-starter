@@ -1,9 +1,9 @@
 package router
 
 import (
-	"github.com/buker/go-api-starter/docs"
-	"github.com/buker/go-api-starter/internal/api"
-	"github.com/buker/go-api-starter/internal/middlewares"
+	"github.com/buker/TimeGladiator/docs"
+	"github.com/buker/TimeGladiator/internal/api"
+	"github.com/buker/TimeGladiator/internal/middlewares"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 	ginlog "github.com/onrik/logrus/gin"

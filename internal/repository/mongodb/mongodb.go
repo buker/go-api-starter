@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/buker/go-api-starter/internal/config"
+	"github.com/buker/TimeGladiator/internal/config"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 

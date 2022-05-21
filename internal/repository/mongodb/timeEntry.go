@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/buker/go-api-starter/internal/models"
+	"github.com/buker/TimeGladiator/internal/models"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"

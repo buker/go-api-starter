@@ -1,4 +1,4 @@
-module github.com/buker/go-api-starter
+module github.com/buker/TimeGladiator
 
 go 1.17
 
